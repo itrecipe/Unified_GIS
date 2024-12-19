@@ -1,7 +1,6 @@
 {
     "compilerOptions": {
-      "types": ["jest", "node"],
-      "jsx": "react"
-    }
-  }
-  
+      "types": ["jest", "node", "kakao.maps.d.ts"],
+      "jsx": "react",
+    },
+}
