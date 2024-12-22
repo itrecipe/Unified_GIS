@@ -2,10 +2,8 @@ import React from "react"
 import { Map, MapTypeControl, ZoomControl } from "react-kakao-maps-sdk"
 import useKakaoLoader from "../../hooks/useKaKaoLoader"
 
-export default function MapPages() {
-  useKakaoLoader();
-
-  const mapRef = useRef<kakao.maps.Map>(null)
+export default function AddMapControl() {
+  useKakaoLoader()
 
   return (
     <>
@@ -22,7 +20,6 @@ export default function MapPages() {
         }}
         level={3} // 지도의 확대 레벨
       >
-        
         <MapTypeControl position={"TOPRIGHT"} />
         <ZoomControl position={"RIGHT"} />
       </Map>
