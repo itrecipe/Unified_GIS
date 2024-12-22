@@ -1,8 +1,8 @@
 import React from "react"
-import { Map, MapTypeControl, ZoomControl } from "react-kakao-maps-sdk"
+import { Map, MapMarker, MapTypeControl, ZoomControl } from "react-kakao-maps-sdk"
 import useKakaoLoader from "../../hooks/useKaKaoLoader"
 
-export default function AddMapControl() {
+export default function MapPages() {
   useKakaoLoader()
 
   return (
@@ -16,12 +16,16 @@ export default function AddMapControl() {
         }}
         style={{
           width: "100%",
-          height: "350px",
+          height: "500px",
         }}
         level={3} // 지도의 확대 레벨
       >
         <MapTypeControl position={"TOPRIGHT"} />
         <ZoomControl position={"RIGHT"} />
+
+        <MapMarker position={{ lat: 33.55635, lng: 126.795841 }} >
+            <div style={{ color:"#000"}}>Hello World!</div>
+        </MapMarker>
       </Map>
     </>
   )
