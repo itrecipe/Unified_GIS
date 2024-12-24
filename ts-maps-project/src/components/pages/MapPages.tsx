@@ -130,7 +130,6 @@ export default function MapPages() {
 
           </Map>
         </div>
-        
       </div>
     </>
   );
