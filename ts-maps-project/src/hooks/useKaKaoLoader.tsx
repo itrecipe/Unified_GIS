@@ -13,7 +13,7 @@ export default function useKakaoLoader(): void {
      *
      * @참고 https://apis.map.kakao.com/web/guide/
      */
-    appkey: "자스키",
+    appkey: "자스키?",
     libraries: ["clusterer", "drawing", "services"],
   } as KakaoLoaderOptions);
 }
@@ -28,7 +28,7 @@ export default function useKakaoLoader(): void {
 //      * 
 //      * @참고 https://apis.map.kakao.com/web/guide/
 //      */
-//     appkey: "f9a777a0a8a1aefe4e8e589283a46d28",
+//     appkey: "자스키",
 //     libraries: ["clusterer", "drawing", "services"],
 //   })
 // }
