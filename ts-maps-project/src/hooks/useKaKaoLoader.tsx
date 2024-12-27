@@ -13,7 +13,7 @@ export default function useKakaoLoader(): void {
      *
      * @참고 https://apis.map.kakao.com/web/guide/
      */
-    appkey: "자스키?",
+    appkey: "b72395e3f7e629d373929d1ba28add82?",
     libraries: ["clusterer", "drawing", "services"],
   } as KakaoLoaderOptions);
 }
