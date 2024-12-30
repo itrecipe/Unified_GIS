@@ -10,7 +10,7 @@ export default function MapPage() {
   const [keyword, setKeyword] = useState<string>("");
   const [searchResults, setSearchResults] = useState([]);
   const [roadviewPosition, setRoadviewPosition] = useState(null);
-  const [isRoadviewVisible, setIsRoadviewVisible] = useState<boolean>(false); // 지도/로드뷰 상태
+  const [isRoadviewVisible, setIsRoadviewVisible] = useState<boolean>(false); // 지도 & 로드뷰 상태
 
   const toggleRoadview = () => setIsRoadviewVisible((prev) => !prev);
 
