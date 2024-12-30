@@ -34,7 +34,8 @@ export default function KakaoMap({
       style={{ width: "100%", height: "900px" }}
       level={3}
     >
-      <MapInfoWindow // 인포윈도우 생성 및 지도에 표시
+      
+      {/* <MapInfoWindow // 인포윈도우 생성 및 지도에 표시
         position={{
           // 인포 윈도우가 표시될 위치
           lat: 33.450701,
@@ -43,7 +44,7 @@ export default function KakaoMap({
         removable={true} // removeable 속성을 true로 설정하면 인포 윈도우를 닫을 수 있는 x버튼이 활성화됨
       >
         <div style={{ padding: "5px", color: "#000" }}>Hello World!</div>
-      </MapInfoWindow>
+      </MapInfoWindow> */}
 
       {searchResults.map((result, index) => (
         <MapMarker
