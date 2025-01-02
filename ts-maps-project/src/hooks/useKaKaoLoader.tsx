@@ -5,6 +5,7 @@ interface KakaoLoaderOptions {
   libraries: Array<"clusterer" | "drawing" | "services">;
 }
 
+// kakao map api를 끌어올 custom hook
 export default function useKakaoLoader(): void {
   useKakaoLoaderOrigin({
     /**

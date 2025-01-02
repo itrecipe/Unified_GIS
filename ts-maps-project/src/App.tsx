@@ -6,7 +6,7 @@ export default function App () {
   
   return (
     <div>
-      <h1>kakao maps clone</h1>
+      <h1>k-map</h1>
       <MapPage />
    </div>
   )
