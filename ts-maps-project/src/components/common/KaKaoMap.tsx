@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   Map,
@@ -24,8 +24,47 @@ export default function KakaoMap({
   searchResults,
   isRoadviewVisible,
 }: KakaoMapProps) {
+  
   // 인포윈도우 열림 상태를 관리하는 state
   const [openMarkerIndex, setOpenMarkerIndex] = useState<number | null>(null);
+  const [mapCenter, setMapCenter] = useState<{ lat: number; lng: number } | null>(null);
+
+  // 현 위치를 가져와서 mapCenter 업뎃
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          console.log("현 위치 : ", latitude, longitude); // 위치 디버깅
+          setMapCenter({ lat: latitude, lng: longitude });
+        },
+        (error) => {
+          console.error("Geolocation error : ", error);
+          // 오류 시 기본 좌표 유지
+          setMapCenter({ lat: 37.566826, lng: 126.9786567 }); // 기본 값
+        }
+      );
+    } else {
+      console.log("이 브라우저에서는 지리적 위치가 지원되지 않습니다.");
+      setMapCenter({ lat: 37.566826, lng: 126.9786567 });
+    }
+  }, []);
+
+  // 검색 결과가 변경될 때 지도의 중심을 업데이트
+  useEffect(() => {
+    if(searchResults.length > 0) {
+      const firstResult = searchResults[0];
+      console.log("검색 결과를 기반으로 하여 지도 중심 업뎃");
+      setMapCenter({
+        lat: parseFloat(firstResult.y), // 검색 결과의 위도
+        lng: parseFloat(firstResult.x), // 검색 결과의 위도
+      });
+    }
+  }, [searchResults]);
+
+  if (!mapCenter) {
+    return <div>Map Loading...</div>
+  }
 
   return isRoadviewVisible && roadviewPosition ? ( // 로드뷰가 활성화 상태이면서 로드뷰의 위치가 존재하는 경우
     <Roadview
@@ -37,22 +76,20 @@ export default function KakaoMap({
   ) : (
     // 로드뷰가 비활성화 상태인 경우 기본 지도를 렌더링
     <Map
-      center={{ lat: 37.566826, lng: 126.9786567 }} // 초기 지도 중심 좌표 (서울 중심)
+      //center={{ lat: 37.566826, lng: 126.9786567 }} // 초기 지도 중심 좌표 (서울 중심)
+      center={mapCenter} // 지도 중심 좌표를 상태로 연결
       style={{ width: "100%", height: "900px" }} // 지도 크기
       level={3} // 초기 줌 레벨 (숫자가 낮을수록 확대)
     >
       {/* 지도에 표시할 정보창 */}
       <MapInfoWindow
-        position={{
-          lat: 37.566826, // 인포 윈도우가 표시될 위도
-          lng: 126.978656, // 인포 윈도우가 표시될 경도
-        }}
+        position={mapCenter} // 동적으로 현재 중심 좌표와 연동
         removable={true} // 닫기 버튼 활성화 -> removeable 속성을 true로 설정하면 인포 윈도우를 닫을 수 있는 x버튼이 활성화됨
       >
-        <div style={{ padding: "5px", color: "#000" }}>Hello World!</div>{" "}
+        <div style={{ padding: "5px", color: "#000" }}>현 위치</div>
         {/* 정보창 내용 */}
       </MapInfoWindow>
-      {/* 검색 결과로 받은 위치들에 마커 표시 */}
+      {/* 검색 결과로 받은 위치에 마커 표시 */}
       {searchResults.map((result, index) => (
         <MapMarker
           key={index} // 고유 키

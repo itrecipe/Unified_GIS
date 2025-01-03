@@ -34,7 +34,7 @@ export default function SearchBar({ keyword, setKeyword, setSearchResults }: Sea
           if (e.key === "Enter") handleSearch(); // Enter 키를 누르면 검색 실행
         }}
         style={{
-          width: "100%", // 입력 필드 너비
+          width: "94%", // 입력 필드 너비
           padding: "10px", // 내부 여백
           marginBottom: "10px", // 아래 여백
           fontSize: "14px", // 글자 크기

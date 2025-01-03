@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import SearchBar from "../../utils/SearchBar";
-import SearchResults from "../../utils/SearchResults";
-import KakaoMap from "../../utils/KaKaoMap";
+import SearchBar from "../common/SearchBar";
+import SearchResults from "../common/SearchResults";
+import KakaoMap from "../common/KaKaoMap";
 import useKakaoLoader from "../../hooks/useKaKaoLoader";
 
 // 지도와 검색 결과 페이지를 구성하는 메인 컴포넌트
