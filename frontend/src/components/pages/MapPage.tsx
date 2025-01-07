@@ -47,12 +47,12 @@ export default function MapPage() {
           results={searchResults} // 검색 결과 배열 전달
           setRoadviewPosition={(position) => {
             // 사용자가 검색 결과 항목을 클릭했을때 호출
-            setRoadviewPosition(position); // 로드부의 위치 설정
+            setRoadviewPosition(position); // 로드뷰의 위치 설정
             setIsRoadviewVisible(true); // 검색 클릭 시 로드뷰 화면 활성화
           }}
         />
 
-        {/* 로드븅와 지도를 전환하는 버튼 */}
+        {/* 로드뷰와 지도를 전환하는 버튼 */}
         <button
           onClick={toggleRoadview} // 클릭 시 지도 & 로드뷰 상태 전환
           style={{

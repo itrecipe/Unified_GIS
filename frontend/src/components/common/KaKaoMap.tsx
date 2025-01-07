@@ -24,10 +24,13 @@ export default function KakaoMap({
   searchResults,
   isRoadviewVisible,
 }: KakaoMapProps) {
-  
   // 인포윈도우 열림 상태를 관리하는 state
   const [openMarkerIndex, setOpenMarkerIndex] = useState<number | null>(null);
-  const [mapCenter, setMapCenter] = useState<{ lat: number; lng: number } | null>(null);
+  const [mapCenter, setMapCenter] = useState<{
+    lat: number;
+    lng: number;
+  } | null>(null);
+  const [roadviewInfo, setRoadviewInfo] = useState<string | null>(null); // 선택된 장소명 상태를 추가
 
   // 현 위치를 가져와서 mapCenter 업뎃
   useEffect(() => {
@@ -52,7 +55,7 @@ export default function KakaoMap({
 
   // 검색 결과가 변경될 때 지도의 중심을 업데이트
   useEffect(() => {
-    if(searchResults.length > 0) {
+    if (searchResults.length > 0) {
       const firstResult = searchResults[0];
       console.log("검색 결과를 기반으로 하여 지도 중심 업뎃");
       setMapCenter({
@@ -62,8 +65,21 @@ export default function KakaoMap({
     }
   }, [searchResults]);
 
+  // 클릭 이벤트 핸들러: 열려 있는 윈포윈도우를 토글 한다.
+  const handleMarkerClick = (index: number) => {
+    setOpenMarkerIndex((prev) => (prev === index ? null : index));
+  };
+
+  const handleRoadviewMarkerClick = () => {
+    if (searchResults.length > 0) {
+      setRoadviewInfo(searchResults[0].place_name); // 첫 번째 검색 결과의 장소명 설정
+    } else {
+      setRoadviewInfo("장소 정보가 없습니다."); // 검색 결과가 없으 ㄹ경우 기본 메시지
+    }
+  };
+
   if (!mapCenter) {
-    return <div>Map Loading...</div>
+    return <div>Map Loading...</div>;
   }
 
   return isRoadviewVisible && roadviewPosition ? ( // 로드뷰가 활성화 상태이면서 로드뷰의 위치가 존재하는 경우
@@ -71,7 +87,28 @@ export default function KakaoMap({
       position={roadviewPosition} // 로드뷰를 표시할 위치
       style={{ width: "100%", height: "900px" }} // 로드뷰의 스타일 (화면 전체)
     >
-      <RoadviewMarker position={roadviewPosition} /> {/* 로드뷰에 마커 표시 */}
+      {/* 로드뷰에 마커 표시 */}
+      <RoadviewMarker
+        position={roadviewPosition}
+        onClick={handleRoadviewMarkerClick}
+      />
+
+      {roadviewInfo && (
+        <div
+          style={{
+            position: "absolute",
+            top: "10px", // 지도 상단에 여유 공간을 두고 위치 조정
+            left: "10px",
+            background: "#fff",
+            padding: "10px",
+            border: "1px solid #ccc",
+            borderRadius: "5px",
+            zIndex: 1000,
+          }}
+        >
+          {roadviewInfo} {/* 장소명 표시 */}
+        </div>
+      )}
     </Roadview>
   ) : (
     // 로드뷰가 비활성화 상태인 경우 기본 지도를 렌더링
@@ -97,31 +134,35 @@ export default function KakaoMap({
             lat: parseFloat(result.y), // 검색 결과의 위도
             lng: parseFloat(result.x), // 검색 결과의 경도
           }}
-          onMouseOver={() => setOpenMarkerIndex(index)} // 마우스 오버 시 상태 업뎃
-          onMouseOut={() => setOpenMarkerIndex(null)} // 마우스 아웃 시 상태 초기화
+          // onMouseOver={() => setOpenMarkerIndex(index)} // 마우스 오버 시 상태 업뎃
+          // onMouseOut={() => setOpenMarkerIndex(null)} // 마우스 아웃 시 상태 초기화
+
+          onClick={() => handleMarkerClick(index)} // 클릭 이벤트 추가
         >
-          {/* 마우스가 올려진 마커에만 인포윈도우를 표시 */}
+          {/* 클릭한 마커에만 인포윈도우를 표시 */}
           {openMarkerIndex === index && (
-            <div style={{ padding: "5px", color: "#000", background: "#fff", border: "1px solid #ccc" }}>
+            <div
+              style={{
+                padding: "5px",
+                color: "#000",
+                background: "#fff",
+                border: "1px solid #ccc",
+              }}
+            >
               {/* 마커에 표시할 내용 (장소명) */}
               {result.place_name}
             </div>
           )}
         </MapMarker>
       ))}
-
       {/* 지도에 교통 정보를 표시하도록 지도 타입 추가 */}
       <MapTypeId type={"TRAFFIC"} />
-
       {/* 지도에 로드뷰 정보가 있는 도로를 표시하기 위해 지도 타입 추가 */}
       {/* <MapTypeId type={"ROADVIEW"} /> */}
-
       {/* 지도에 지형 정보를 표시 하도록 지도 타입 추가 */}
       <MapTypeId type={"TERRAIN"} />
-
       {/* 지도 확대 & 축소 컨트롤러 */}
       <ZoomControl position="RIGHT" /> {/* 우측 위치 */}
-
       {/* 지도 타입 전환 컨트롤러 */}
       <MapTypeControl position="TOPRIGHT" /> {/* 우측 상단 위치 */}
     </Map>
